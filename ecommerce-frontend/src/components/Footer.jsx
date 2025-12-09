@@ -4,7 +4,7 @@ export default function Footer() {
       style={{
         backgroundColor: "#5ca6ebff",
         color: "#fff",
-        padding: "25px 40px",
+        padding: "15px 30px",
         textAlign: "center",
         fontSize: "18px",
         marginTop: "30px",
@@ -12,7 +12,7 @@ export default function Footer() {
         boxSizing: "border-box"
       }}
     >
-      © 2025 My E-Commerce App
+      © 2025 Sneakers Elite.com
     </footer>
   );
 }
