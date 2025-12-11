@@ -8,8 +8,8 @@ export default function LikeButton() {
       onClick={() => setLiked(!liked)}
       style={{
         padding: "10px 20px",
-        background: liked ? "red" : "#ddd",
-        color: liked ? "white" : "black",
+        background: liked ? "red" : "#cd3434ff",
+        color: liked ? "red" : "red",
         borderRadius: "8px",
         cursor: "pointer"
       }}

@@ -26,7 +26,7 @@ export default function Card(props) {
         onClick={() => setLiked(!liked)}
         style={{
           padding: "5px 12px",
-          backgroundColor: liked ? "red" : "black",
+          backgroundColor: liked ? "red" : "white",
           color: "white",
           border: "black",
           borderRadius: "10px",

@@ -1,183 +1,254 @@
-import React, { useState  } from "react";
-import Card from "./Card";
+import React, { useState } from "react";
 
 export default function Home() {
   // -----------------------------
-  // Dummy Product Data (Day 2)
+  // Day 2 — Dummy Product Data
   // -----------------------------
   const products = [
-    {
-      title: "SB Dunk ",
-      description: "One of the most best seller",
-      category: "Sneaker",
-      price: "35000",
-    },
-    {
-      title: "Nike T-shirt",
-      description: "A black T-shirt with white Nike logo",
-      category: "Fashion",
-      price: "5000",
-    },
-    {
-      title: "Nike Shoes",
-      description: "Comfortable sports shoes",
-      category: "Sports",
-      price: "10000",
-    },
-    {
-      title: "Nike x Travis Scott",
-      description: "Most hyped Sneakers",
-      category: "Sneaker",
-      price: "100000",
-    },
-     {
-      title: "Nike socks",
-      description: "Pure cotten socks.Pack of 3",
-      category: "Fashion",
-      price: 2000,
-    },
+    { title: "SB Dunk", description: "One of the best sellers", category: "Sneaker", price: "35000" },
+    { title: "Nike T-shirt", description: "Black T-shirt with Nike logo", category: "Fashion", price: "5000" },
+    { title: "Nike Shoes", description: "Comfortable sports shoes", category: "Sports", price: "10000" },
+    { title: "Nike x Travis Scott", description: "Most hyped Sneakers", category: "Sneaker", price: "100000" },
+    { title: "Nike Socks", description: "Pure cotton socks (Pack of 3)", category: "Fashion", price: "2000" },
   ];
 
-  // -------------------------------------
-  // Day 3 — State + Event Handling
-  // -------------------------------------
+  // --------------------------------------
+  // Day 4 — FORM STATES
+  // --------------------------------------
+  const [title, setTitle] = useState("");
+  const [category, setCategory] = useState("");
+  const [price, setPrice] = useState("");
+  const [success, setSuccess] = useState(false);
 
-  // Like button state (one per product)
+  // List of form-submitted items
+  const [items, setItems] = useState([]);
+
+  // --------------------------------------
+  // Handle Form Submit
+  // --------------------------------------
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    if (!title || !category || !price) {
+      alert("All fields are required!");
+      return;
+    }
+
+    const newItem = { title, category, price };
+
+    setItems([...items, newItem]);
+
+    // Clear input fields
+    setTitle("");
+    setCategory("");
+    setPrice("");
+
+    // show success msg temporarily
+    setSuccess(true);
+    setTimeout(() => setSuccess(false), 2000);
+  };
+
+  // Delete a single item
+  const deleteItem = (index) => {
+    const updated = [...items];
+    updated.splice(index, 1);
+    setItems(updated);
+  };
+
+  // Clear ALL items
+  const clearAll = () => setItems([]);
+
+  // --------------------------------------
+  // Day 3 States (Like, Expand, Qty, Purchased)
+  // --------------------------------------
   const [likes, setLikes] = useState(Array(products.length).fill(false));
-
-  // Expand/Collapse description
   const [expand, setExpand] = useState(Array(products.length).fill(false));
-
-  // Increment / Decrement quantity
   const [quantity, setQuantity] = useState(Array(products.length).fill(1));
-
-  // Mark as Purchased / Done
   const [purchased, setPurchased] = useState(Array(products.length).fill(false));
 
-  // Toggle Like Button
-  const toggleLike = (index) => {
+  const toggleLike = (i) => {
     const updated = [...likes];
-    updated[index] = !updated[index];
+    updated[i] = !updated[i];
     setLikes(updated);
   };
 
-  // Toggle Expand / Collapse description
-  const toggleExpand = (index) => {
+  const toggleExpand = (i) => {
     const updated = [...expand];
-    updated[index] = !updated[index];
+    updated[i] = !updated[i];
     setExpand(updated);
   };
 
-  // Increase Quantity
-  const incrementQty = (index) => {
+  const incrementQty = (i) => {
     const updated = [...quantity];
-    updated[index] += 1;
+    updated[i] += 1;
     setQuantity(updated);
   };
 
-  // Decrease Quantity
-  const decrementQty = (index) => {
-    if (quantity[index] > 1) {
+  const decrementQty = (i) => {
+    if (quantity[i] > 1) {
       const updated = [...quantity];
-      updated[index] -= 1;
+      updated[i] -= 1;
       setQuantity(updated);
     }
   };
 
-  // Mark Purchase
-  const markPurchased = (index) => {
+  const markPurchased = (i) => {
     const updated = [...purchased];
-    updated[index] = !updated[index];
+    updated[i] = !updated[i];
     setPurchased(updated);
   };
 
+  // ----------------------------------------------------------
+  // UI
+  // ----------------------------------------------------------
   return (
-    <div
-      style={{
-        padding: "40px",
-        backgroundColor: "#736cd3ff",
-        minHeight: "600px",
-      }}
-    >
-      <h1 style={{ fontSize: "34px", marginBottom: "20px" }}>
-        Welcome to Sneakers Elite
-      </h1>
+    <div style={{ padding: "40px", backgroundColor: "#316733c9", minHeight: "100vh" }}>
 
-      <p style={{ fontSize: "18px" }}>
-        Check out our latest products below:
-      </p>
+      <h1>Add ItemCard</h1>
 
-      {/* PRODUCT CARDS */}
-      <div style={{ display: "flex", gap: "30px", marginTop: "30px" }}>
-        {products.map((item, index) => (
-          <div
-            key={index}
+      {/* ------------------------- */}
+      {/*        FORM AREA         */}
+      {/* ------------------------- */}
+      <form
+        onSubmit={handleSubmit}
+        style={{
+          background: "white",
+          padding: "20px",
+          borderRadius: "10px",
+          width: "400px",
+          marginBottom: "20px",
+        }}
+      >
+        <h2>Add New Product</h2>
+
+        <input
+          type="text"
+          placeholder="Title"
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
+          style={{ width: "100%", padding: "10px", marginBottom: "10px" }}
+        />
+
+        <input
+          type="text"
+          placeholder="Category"
+          value={category}
+          onChange={(e) => setCategory(e.target.value)}
+          style={{ width: "100%", padding: "10px", marginBottom: "10px" }}
+        />
+
+        <input
+          type="number"
+          placeholder="Price"
+          value={price}
+          onChange={(e) => setPrice(Number(e.target.value))}
+          style={{ width: "100%", padding: "10px", marginBottom: "10px" }}
+        />
+
+        <button
+          type="submit"
+          style={{
+            padding: "10px",
+            width: "100%",
+            background: "#00fa1dff",
+            color: "white",
+            border: "none",
+            borderRadius: "5px",
+          }}
+        >
+          Submit
+        </button>
+
+        {success && <p style={{ color: "green" }}>Item added successfully!</p>}
+      </form>
+
+      {/* ------------------------- */}
+      {/*   LIST OF ADDED ITEMS     */}
+      {/* ------------------------- */}
+      <h2>Submitted Items:</h2>
+
+      {items.length === 0 && <p>No items yet.</p>}
+
+      {items.map((item, index) => (
+        <div
+          key={index}
+          style={{
+            background: "white",
+            padding: "10px",
+            borderRadius: "8px",
+            marginBottom: "10px",
+            width: "350px",
+          }}
+        >
+          <h3>{item.title}</h3>
+          <p>Category: {item.category}</p>
+          <p>Price: ₹ {item.price}</p>
+
+          <button
+            onClick={() => deleteItem(index)}
             style={{
-              width: "260px",
-              border: "1px solid gray",
-              borderRadius: "10px",
-              padding: "15px",
-              backgroundColor: purchased[index] ? "#0df609ff" : "#b3b9cbff",
+              background: "red",
+              color: "white",
+              padding: "5px 10px",
+              border: "none",
+              borderRadius: "5px",
             }}
           >
-            {/* TITLE */}
-            <h2 style={{ fontSize: "20px" }}>{item.title}</h2>
+            Delete Item
+          </button>
+        </div>
+      ))}
 
-            {/* PRICE */}
-            <p style={{ fontWeight: "bold" }}>₹ {item.price}</p>
+      {items.length > 0 && (
+        <button
+          onClick={clearAll}
+          style={{
+            padding: "10px",
+            background: "red",
+            color: "white",
+            border: "none",
+            borderRadius: "5px",
+            marginTop: "10px",
+          }}
+        >
+          Clear All
+        </button>
+      )}
 
-            {/* Expand / Collapse */}
-            <button
-              onClick={() => toggleExpand(index)}
-              style={{
-                backgroundColor: "rgba(77, 46, 107, 0.87)",
-                color: "white",
-                padding: "5px 10px",
-                border: "none",
-                marginBottom: "5px",
-              }}
-            >
-              {expand[index] ? "Hide Details" : "Show Details"}
+      <hr style={{ margin: "40px 0" }} />
+
+      {/* ------------------------- */}
+      {/*  ORIGINAL PRODUCT CARDS   */}
+      {/* ------------------------- */}
+      <h1>Original Products</h1>
+
+      <div style={{ display: "flex", gap: "30px", marginTop: "20px" }}>
+        {products.map((item, i) => (
+          <div key={i} style={{ width: "260px", background: purchased[i] ? "lightgreen" : "#b1badcff", padding: "15px", borderRadius: "10px" }}>
+            <h2>{item.title}</h2>
+            <p><b>₹ {item.price}</b></p>
+
+            <button onClick={() => toggleExpand(i)}>
+              {expand[i] ? "Hide Details" : "Show Details"}
             </button>
 
-            {expand[index] && (
-              <p style={{ marginBottom: "10px" }}>{item.description}</p>
-            )}
+            {expand[i] && <p>{item.description}</p>}
 
-            {/* Like Button */}
-            <button
-              onClick={() => toggleLike(index)}
-              style={{
-                backgroundColor: likes[index] ? "#ff4d4d" : "#6f5ae4ff",
-                padding: "6px 12px",
-                border: "none",
-                marginRight: "10px",
-                color: "white",
-              }}
-            >
-              {likes[index] ? "♥ Liked" : "♡ Like"}
+            <button onClick={() => toggleLike(i)}>
+              {likes[i] ? "♥ Liked" : "♡ Like"}
             </button>
 
-            {/* Quantity Section */}
-            <div style={{ margin: "20px 0" }}>
-              <button onClick={() => decrementQty(index)}>-</button>
-              <span style={{ padding: "0 20px" }}>{quantity[index]}</span>
-              <button onClick={() => incrementQty(index)}>+</button>
+            <div style={{ marginTop: "10px" }}>
+              <button onClick={() => decrementQty(i)}>-</button>
+              <span style={{ padding: "0 10px" }}>{quantity[i]}</span>
+              <button onClick={() => incrementQty(i)}>+</button>
             </div>
 
-            {/* Mark as Purchased */}
             <button
-              onClick={() => markPurchased(index)}
-              style={{
-                backgroundColor: purchased[index] ? "green" : "blue",
-                padding: "6px 12px",
-                border: "none",
-                color: "white",
-                width: "100%",
-                marginTop: "10px",
-              }}
+              onClick={() => markPurchased(i)}
+              style={{ marginTop: "10px", width: "100%" }}
             >
-              {purchased[index] ? "Added to Cart ✓" : "Add to Cart"}
+              {purchased[i] ? "Added ✓" : "Add to Cart"}
             </button>
           </div>
         ))}
