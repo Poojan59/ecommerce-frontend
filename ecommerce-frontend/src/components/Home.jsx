@@ -2,7 +2,7 @@ import React, { useState } from "react";
 
 export default function Home() {
   // -----------------------------
-  // Day 2 — Dummy Product Data
+  // Day 2 —  Product Data
   // -----------------------------
   const products = [
     { title: "SB Dunk", description: "One of the best sellers", category: "Sneaker", price: "35000" },
@@ -13,7 +13,7 @@ export default function Home() {
   ];
 
   // --------------------------------------
-  // Day 4 — FORM STATES
+  // Day 4 — 
   // --------------------------------------
   const [title, setTitle] = useState("");
   const [category, setCategory] = useState("");
@@ -102,7 +102,7 @@ export default function Home() {
   // UI
   // ----------------------------------------------------------
   return (
-    <div style={{ padding: "40px", backgroundColor: "#316733c9", minHeight: "100vh" }}>
+    <div style={{ padding: "40px", backgroundColor: "#ffffffff", minHeight: "100vh" }}>
 
       <h1>Add ItemCard</h1>
 
@@ -218,13 +218,13 @@ export default function Home() {
       <hr style={{ margin: "40px 0" }} />
 
       {/* ------------------------- */}
-      {/*  ORIGINAL PRODUCT CARDS   */}
+      {/*  PRODUCT CARDS   */}
       {/* ------------------------- */}
       <h1>Original Products</h1>
 
       <div style={{ display: "flex", gap: "30px", marginTop: "20px" }}>
         {products.map((item, i) => (
-          <div key={i} style={{ width: "260px", background: purchased[i] ? "lightgreen" : "#b1badcff", padding: "15px", borderRadius: "10px" }}>
+          <div key={i} style={{ width: "260px", background: purchased[i] ? "lightgreen" : "#9de7edff", padding: "15px", borderRadius: "10px" }}>
             <h2>{item.title}</h2>
             <p><b>₹ {item.price}</b></p>
 
@@ -235,7 +235,7 @@ export default function Home() {
             {expand[i] && <p>{item.description}</p>}
 
             <button onClick={() => toggleLike(i)}>
-              {likes[i] ? "♥ Liked" : "♡ Like"}
+              {likes[i] ?"♥ Liked" : "♡ Like"}
             </button>
 
             <div style={{ marginTop: "10px" }}>

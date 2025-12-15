@@ -1,6 +1,9 @@
 export default function ItemCard({ title, category, price, onDelete }) {
   return (
     <div
+   className="card shadow p-3 h-100"
+
+
       style={{
         padding: "15px",
         borderRadius: "10px",

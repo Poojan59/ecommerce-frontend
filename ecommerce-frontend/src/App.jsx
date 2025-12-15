@@ -3,6 +3,7 @@ import Home from "./components/Home";
 import About from "./components/About";
 import Project from "./components/Project";
 import Footer from "./components/Footer";
+import NewProducts from "./components/NewProducts";
 
 import { useState } from "react";
 
@@ -16,6 +17,7 @@ function App() {
       {page === "home" && <Home />}
       {page === "about" && <About />}
       {page === "project" && <Project />}
+      {page === "newproducts" && <NewProducts />}
 
       <Footer />
     </>
