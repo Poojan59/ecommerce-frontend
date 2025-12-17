@@ -4,6 +4,9 @@ import About from "./components/About";
 import Project from "./components/Project";
 import Footer from "./components/Footer";
 import NewProducts from "./components/NewProducts";
+import AddUser from "./components/AddUser";
+
+
 
 import { useState } from "react";
 
@@ -18,10 +21,12 @@ function App() {
       {page === "about" && <About />}
       {page === "project" && <Project />}
       {page === "newproducts" && <NewProducts />}
+      {page === "users" && <Users />}
+
 
       <Footer />
     </>
   );
 }
 
-export default App;
+export default App;

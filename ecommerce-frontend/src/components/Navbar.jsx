@@ -8,9 +8,9 @@ export default function Navbar({ setPage }) {
           <button className="btn btn-outline-light" onClick={() => setPage("home")}>Home</button>
           <button className="btn btn-outline-light" onClick={() => setPage("about")}>About</button>
           <button className="btn btn-outline-light" onClick={() => setPage("project")}>Project</button>
-          <button className="btn btn-outline-warning" onClick={() => setPage("newproducts")}>
-            NewProducts
-          </button>
+          <button className="btn btn-outline-warning" onClick={() => setPage("newproducts")}>NewProduct</button>
+       
+
         </div>
       </div>
     </nav>
