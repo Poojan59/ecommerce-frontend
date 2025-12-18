@@ -1,15 +1,11 @@
-
-
 import { useEffect, useState } from "react";
-
-
 
 function NewProducts() {
   const [users, setUsers] = useState([]);
   const [name, setName] = useState("");
   const [message, setMessage] = useState("");
+  const [editId, setEditId] = useState(null);
 
-  // ✅ FETCH when page loads
   useEffect(() => {
     fetchUsers();
   }, []);
@@ -28,83 +24,116 @@ function NewProducts() {
       return;
     }
 
-    const res = await fetch("http://localhost:5009/users", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ name })
-    });
-
-    const data = await res.json();
-    setMessage(data.message);
+    if (editId) {
+      await fetch(`http://localhost:5009/users/${editId}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name })
+      });
+      setMessage("User updated successfully");
+      setEditId(null);
+    } else {
+      await fetch("http://localhost:5009/users", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name })
+      });
+      setMessage("User added successfully");
+    }
 
     setName("");
-    fetchUsers(); // ✅ VERY IMPORTANT
+    fetchUsers();
   };
 
-return (
-  <div className="container-fluid mt-4 px-5">
+  const handleEdit = (user) => {
+    setName(user.name);
+    setEditId(user.id);
+  };
 
-    <h2 className="mb-3">Add User</h2>
+  const handleDelete = async (id) => {
+    await fetch(`http://localhost:5009/users/${id}`, {
+      method: "DELETE"
+    });
+    setMessage("User deleted successfully");
+    fetchUsers();
+  };
 
-    <form onSubmit={handleSubmit} className="mb-3">
-      <input
-        value={name}
-        onChange={(e) => setName(e.target.value)}
-        placeholder="Enter name"
-        className="form-control form-control-lg mb-2"
-      />
+  return (
+    <div className="container-fluid py-5 bg-light">
+      <div className="row justify-content-center">
+        <div className="col-lg-8 col-md-10">
 
-      <button className="btn btn-primary btn-lg">
-        Add
-      </button>
-    </form>
+          {/* CARD */}
+          <div className="card shadow-lg">
+            <div className="card-body p-4">
 
-    {message && <p className="text-success fs-5">{message}</p>}
+              <h2 className="text-center mb-4">
+                {editId ? "Update User" : "Add User"}
+              </h2>
 
-    <h3 className="mt-4">Users List</h3>
+              {/* FORM */}
+              <form onSubmit={handleSubmit} className="d-flex gap-2 mb-3">
+                <input
+                  className="form-control"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  placeholder="Enter user name"
+                />
+                <button className="btn btn-primary px-4">
+                  {editId ? "Update" : "Add"}
+                </button>
+              </form>
 
-    <ul className="list-group mt-2">
-      {users.map((u) => (
-        <li key={u.id} className="list-group-item fs-5">
-          {u.name}
-        </li>
-      ))}
-    </ul>
-  </div>
-);
+              {message && (
+                <div className="alert alert-info text-center">
+                  {message}
+                </div>
+              )}
 
+              {/* TABLE */}
+              <h4 className="mt-4">Users List</h4>
 
-return (
-  <div className="container-fluid mt-10 px-10">
+              <div className="table-responsive">
+                <table className="table table-bordered table-striped mt-2 text-center">
+                  <thead className="table-dark">
+                    <tr>
+                      <th>#</th>
+                      <th>Name</th>
+                      <th>Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {users.map((u, index) => (
+                      <tr key={u.id}>
+                        <td>{index + 1}</td>
+                        <td>{u.name}</td>
+                        <td>
+                          <button
+                            className="btn btn-warning btn-sm me-2"
+                            onClick={() => handleEdit(u)}
+                          >
+                            Edit
+                          </button>
+                          <button
+                            className="btn btn-danger btn-sm"
+                            onClick={() => handleDelete(u.id)}
+                          >
+                            Delete
+                          </button>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
 
-    <h2 className="mb-3">Add User</h2>
+            </div>
+          </div>
 
-    <form onSubmit={handleSubmit} className="mb-3">
-      <input
-        value={name}
-        onChange={(e) => setName(e.target.value)}
-        placeholder="Enter name"
-        className="form-control form-control-lg mb-2"
-      />
-
-      <button className="btn btn-primary btn-lg">
-        Add
-      </button>
-    </form>
-
-    {message && <p className="text-success fs-5">{message}</p>}
-
-    <h3 className="mt-4">Users List</h3>
-
-    <ul className="list-group mt-2">
-      {users.map((u) => (
-        <li key={u.id} className="list-group-item fs-5">
-          {u.name}
-        </li>
-      ))}
-    </ul>
-  </div>
-);
-} 
+        </div>
+      </div>
+    </div>
+  );
+}
 
 export default NewProducts;
